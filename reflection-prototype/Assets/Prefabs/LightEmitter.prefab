@@ -143,9 +143,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc01d3c71de5fa4ab29e885c3d66a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
+  pedestalPrefab: {fileID: 8353697752622453403, guid: f26e704b4d0797b4d9ff0f1fdd863c8b,
+    type: 3}
   _maxReflectionCount: 100
   _maxStepDistance: 200
   _drawPrediction: 1
+  _isActive: 0
+  _activeCrystals: []
+  _activePrism: {fileID: 0}
+  _parentLightEmitter: {fileID: 0}
 --- !u!33 &4567588731401354304
 MeshFilter:
   m_ObjectHideFlags: 0

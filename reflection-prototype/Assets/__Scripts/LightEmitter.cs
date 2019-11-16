@@ -5,6 +5,7 @@ using UnityEngine;
 public class LightEmitter : MonoBehaviour
 {
     public bool debug;
+    public GameObject pedestalPrefab;
 
     public int _maxReflectionCount = 5;
     public float _maxStepDistance = 200;
@@ -66,7 +67,7 @@ public class LightEmitter : MonoBehaviour
             GameObject go = _hit.collider.gameObject;
             string tag = go.tag;
 
-            if (tag == "Mirror" || tag == "Player" || tag == "Pedestal")
+            if (tag == "Mirror" || tag == "Player" || tag == "Pedestal" || tag == "Ghost")
             {
                 ReflectLineRenderer(_lineVertices[0], this.transform.forward, _maxReflectionCount);
 
@@ -121,9 +122,11 @@ public class LightEmitter : MonoBehaviour
                     ReflectLineRenderer(hit.point + direction, direction, reflectionsLeft - 1);
                     break;
                 case "Player":
+                case "Pedestal":
                     ReflectLineRenderer(hit.point + direction, direction, reflectionsLeft - 1);
                     break;
-                case "Pedestal":
+                case "Ghost":
+                    KillGhost(hit.collider.gameObject);
                     ReflectLineRenderer(hit.point + direction, direction, reflectionsLeft - 1);
                     break;
                 case "LightRay":
@@ -229,5 +232,12 @@ public class LightEmitter : MonoBehaviour
         _lineVertices.Clear();
         _lineRenderer.positionCount = _lineVertices.Count;
         _lineRenderer.SetPositions(_lineVertices.ToArray());
+    }
+
+    private void KillGhost(GameObject go)
+    {
+        GameObject pedestalGO = Instantiate<GameObject>(pedestalPrefab, go.transform.position, Quaternion.identity);
+        PedestalScript pedestal = pedestalGO.GetComponent<PedestalScript>();
+        Destroy(go);
     }
 }
