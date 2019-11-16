@@ -1,13 +1,5 @@
 fileFormatVersion: 2
-guid: 2531a7a3d15d8d643a661f7dc6b71924
-labels:
-- Mirror
-- Reflection
-- Camera
-- Shiny
-- Fogged
-- Film
-- Magic
+guid: 0211e26e4ed1dc94eaa6d4b20698c771
 PrefabImporter:
   externalObjects: {}
   userData: 

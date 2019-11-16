@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84103677243780447a168d45c75e1b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasMirror: 1
+  hasMirror: 0
   locked: 1
 --- !u!54 &3388798316590236931
 Rigidbody:
