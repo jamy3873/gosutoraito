@@ -110,7 +110,8 @@ public class LightEmitter : MonoBehaviour
             {
                 case "Mirror":
                     direction = Vector3.Reflect(direction, hit.normal);
-                    position = hit.point;
+                    //position = hit.point; //Direct Hit
+                    position = hit.collider.transform.position; //Locks to mirror center
                     _lineVertices.Add(position);
                     ReflectLineRenderer(position, direction, reflectionsLeft - 1); //Reflect line again
                     break;
@@ -118,9 +119,35 @@ public class LightEmitter : MonoBehaviour
                     ActivateCrystal(hit.collider.gameObject);
                     position = hit.point;
                     _lineVertices.Add(position);
-                    ReflectLineRenderer(hit.point + direction, direction, reflectionsLeft - 1);
+                    ReflectLineRenderer(hit.point + direction, direction, reflectionsLeft - 1); // the + direction makes it pass through collider
                     break;
-                case "Player":
+                case "Player": //Sword Reflection
+                    PlayerBehavior player = PlayerBehavior.S.GetComponent<PlayerBehavior>();
+                    print(Vector3.Angle(player.transform.forward, (hit.point - player.transform.position).normalized));
+                    if (player.holdingSword && player.CanReflect(hit.point))
+                    {
+                        Vector3 origin = Camera.main.transform.position;
+                        ray.origin = origin; //Ray origin is the camera
+                        ray.direction = Camera.main.transform.forward;
+                        origin -= player.transform.up;
+                        origin += player.transform.forward;
+                        position = origin; //But the line render starts slightly below
+                        _lineVertices.Add(position);
+
+                        if (Physics.Raycast(ray, out hit, _maxStepDistance))
+                        {
+                            direction = (hit.point - origin).normalized;
+                        }
+                        else
+                            direction = Camera.main.transform.forward;
+                        
+                        ReflectLineRenderer(position, direction, reflectionsLeft - 1);
+                    }
+                    else
+                    {
+                        ReflectLineRenderer(hit.point + direction, direction, reflectionsLeft - 1);
+                    }
+                    break;
                 case "Pedestal":
                     ReflectLineRenderer(hit.point + direction, direction, reflectionsLeft - 1);
                     break;

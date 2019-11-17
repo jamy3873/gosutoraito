@@ -13,6 +13,8 @@ public class GhostBehavior : MonoBehaviour
     public float floatHeight = 3f;
     public float floatSpeed = 5f;
     public float speed = 1f;
+    public int sightDistance = 20;
+    [Range(0, 90)] public float fieldOfView = 80;
 
     void Start()
     {
@@ -42,15 +44,17 @@ public class GhostBehavior : MonoBehaviour
         tempPos.y = y0 + floatHeight * sin;
         transform.position = tempPos;
 
-        if (targetInSight(targetObject))
+        if (targetInSight(targetObject.transform))
         {
             Vector3 targetPos = targetObject.transform.position;
             Vector3 targetDir = targetPos - transform.position;
+
             transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * 0.05f);
+
             Quaternion toRotation = Quaternion.LookRotation(targetDir, transform.up);
-            /*print("Target:" + targetDir.ToString());
-            print("Rotate:"+toRotation.ToString());*/
             Quaternion rot = Quaternion.Lerp(transform.rotation, toRotation, 100f);
+            rot.x = rot.z = 0;
+
             transform.rotation = rot;
         }
 
@@ -63,20 +67,18 @@ public class GhostBehavior : MonoBehaviour
         Gizmos.DrawRay(new Ray(transform.position, transform.forward));
     }
 
-    bool targetInSight(GameObject target)
+    bool targetInSight(Transform target)
     {
-        Vector3 targetDir = (target.transform.position - transform.position).normalized;
-        if (Vector3.Angle(transform.forward, targetDir) < 60)
+        Vector3 targetDir = (target.position - transform.position).normalized;
+        Ray sightline = new Ray(transform.position, targetDir);
+        RaycastHit hit;
+        if (Vector3.Angle(transform.forward, targetDir) < fieldOfView && 
+            Physics.Raycast(sightline, out hit, sightDistance) &&
+            hit.collider.gameObject.tag == target.gameObject.tag) 
         {
             return true;
         }
 
         return false;
-        /*Ray sightline = new Ray(transform.position, targetDir);
-        RaycastHit hit;
-        if (Physics.Raycast(sightline, out hit, 20))
-        {
-            
-        }*/
     }
 }
