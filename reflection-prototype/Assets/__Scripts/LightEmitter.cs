@@ -70,7 +70,6 @@ public class LightEmitter : MonoBehaviour
             if (tag == "Mirror" || tag == "Player" || tag == "Pedestal" || tag == "Ghost")
             {
                 ReflectLineRenderer(_lineVertices[0], this.transform.forward, _maxReflectionCount);
-
             }
             else
             {
@@ -123,7 +122,6 @@ public class LightEmitter : MonoBehaviour
                     break;
                 case "Player": //Sword Reflection
                     PlayerBehavior player = PlayerBehavior.S.GetComponent<PlayerBehavior>();
-                    print(Vector3.Angle(player.transform.forward, (hit.point - player.transform.position).normalized));
                     if (player.holdingSword && player.CanReflect(hit.point))
                     {
                         Vector3 origin = Camera.main.transform.position;
@@ -264,6 +262,7 @@ public class LightEmitter : MonoBehaviour
     {
         GameObject pedestalGO = Instantiate<GameObject>(pedestalPrefab, go.transform.position, Quaternion.identity);
         PedestalScript pedestal = pedestalGO.GetComponent<PedestalScript>();
+        pedestal.hasMirror = false;
         Destroy(go);
     }
 }

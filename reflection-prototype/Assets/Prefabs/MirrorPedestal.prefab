@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84103677243780447a168d45c75e1b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasMirror: 0
+  thisMirror: {fileID: 0}
   locked: 1
 --- !u!54 &3388798316590236931
 Rigidbody:
@@ -266,7 +266,7 @@ PrefabInstance:
     - target: {fileID: 604377132297251442, guid: 977d462d3da090443aa549827d636355,
         type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Mirror
       objectReference: {fileID: 0}
     - target: {fileID: 126772, guid: 977d462d3da090443aa549827d636355, type: 3}
       propertyPath: m_TagString

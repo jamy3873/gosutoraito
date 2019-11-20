@@ -70,7 +70,7 @@ public class GhostBehavior : MonoBehaviour
     bool targetInSight(Transform target)
     {
         Vector3 targetDir = (target.position - transform.position).normalized;
-        Ray sightline = new Ray(transform.position, targetDir);
+        Ray sightline = new Ray(transform.position + targetDir, targetDir);
         RaycastHit hit;
         if (Vector3.Angle(transform.forward, targetDir) < fieldOfView && 
             Physics.Raycast(sightline, out hit, sightDistance) &&
