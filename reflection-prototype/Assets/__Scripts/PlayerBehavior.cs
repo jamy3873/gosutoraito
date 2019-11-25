@@ -34,7 +34,14 @@ public class PlayerBehavior : MonoBehaviour
                         if (ped.hasMirror)
                             Grab(go);
                         else
+                        {
                             Place(go);
+                        }
+                        if (!ped.locked)
+                        {
+                            Move(go);
+                        }
+                            
                         break;
                     case "Mirror":
                         //editMode
@@ -58,7 +65,7 @@ public class PlayerBehavior : MonoBehaviour
 
     private GameObject GetObject()
     {
-        Ray ray = new Ray(_thisCamera.transform.position, _thisCamera.transform.forward);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 5f))
         {
@@ -74,6 +81,11 @@ public class PlayerBehavior : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private void Move(GameObject item)
+    {
+
     }
 
     public void Grab(GameObject item)

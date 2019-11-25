@@ -29,8 +29,19 @@ public class PedestalScript : MonoBehaviour
         
     }
 
-    public void LockPosition()
+    private void OnMouseDown()
     {
-        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
+    }
+
+    private void OnMouseOver()
+    {
+
+        transform.GetChild(1).GetComponent<Renderer>().material.color = Color.red;
+    }
+
+    private void OnMouseExit()
+    {
+        transform.GetChild(1).GetComponent<Renderer>().material.color = Color.white;
     }
 }
