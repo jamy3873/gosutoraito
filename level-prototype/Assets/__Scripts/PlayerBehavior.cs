@@ -14,8 +14,8 @@ public class PlayerBehavior : MonoBehaviour
     public GameObject mouseOverObject;
     public FirstPersonController controllerScript;
 
-    private GameObject _editMirror;
-    private Quaternion _previousMirrorRotation;
+    public GameObject _editMirror;
+    public Quaternion _previousMirrorRotation;
 
 
     public bool holdingSword
@@ -33,7 +33,29 @@ public class PlayerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (controllerScript.editingMirror) //things that happen while editing the mirror
+        {
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+
+            Vector3 currentRotation = _editMirror.transform.rotation.eulerAngles;
+            Vector3 newRotation = new Vector3(currentRotation.x + vertical, currentRotation.y + horizontal, currentRotation.z);
+            _editMirror.transform.rotation = Quaternion.Euler(newRotation);
+            
+            if (Input.GetKeyUp(KeyCode.E)) //save the edits
+            {
+                controllerScript.editingMirror = false;
+                _editMirror = null;
+            }
+            else if (Input.GetKeyUp(KeyCode.Q)) //cancel the edits
+            {
+                controllerScript.editingMirror = false;
+                _editMirror.transform.rotation = _previousMirrorRotation;
+                _editMirror = null;
+            }
+        }
+        
+        if (Input.GetKeyUp(KeyCode.E))
         {
             if (mouseOverObject != null)
             {
@@ -46,35 +68,9 @@ public class PlayerBehavior : MonoBehaviour
                         break;
                 }
             }
-            else if (controllerScript.editingMirror)
-            {
-                controllerScript.editingMirror = false;
-                _editMirror = null;
-            }
-
         }
-
-        if (controllerScript.editingMirror)
-        {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-
-            Vector3 currentRotation = _editMirror.transform.rotation.eulerAngles;
-            Vector3 newRotation = new Vector3(currentRotation.x + vertical, currentRotation.y + horizontal, currentRotation.z);
-            _editMirror.transform.rotation = Quaternion.Euler(newRotation);
-        }
-
-
-        if (controllerScript.editingMirror && Input.GetKey(KeyCode.Mouse1))
-        {
-            controllerScript.editingMirror = false;
-            if (_editMirror != null)
-            {
-                _editMirror.transform.rotation = _previousMirrorRotation;
-            }
-            _editMirror = null;
-        }
-        else if (Input.GetKey(KeyCode.Mouse1))
+        
+        if (Input.GetKey(KeyCode.Mouse1))
         {
             _holdingSword = true;
         }

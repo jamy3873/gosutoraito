@@ -17,13 +17,11 @@ public class PedestalScript : MonoBehaviour
         }
     }
     public bool locked = true;
-
-    private Rigidbody rb;
+    public Vector3 oldPos;
     void Start()
     {
         rootNode = transform.parent;
         originalParent = rootNode.parent;
-        rb = rootNode.GetComponent<Rigidbody>();
         thisMirror = transform.parent.GetChild(0).gameObject;
     }
 
@@ -39,6 +37,7 @@ public class PedestalScript : MonoBehaviour
         if (!locked && Vector3.Distance(transform.position, PlayerBehavior.S.transform.position) < 5f)
         {
             rootNode.parent = PlayerBehavior.S.grabTransform;
+            oldPos = transform.position;
         }
         
     }
@@ -49,7 +48,7 @@ public class PedestalScript : MonoBehaviour
         if (Vector3.Distance(transform.position, PlayerBehavior.S.transform.position) < 5f)
         {
             rootNode.parent = originalParent;
-            thisMirror.SetActive(!hasMirror);
+            hasMirror = !hasMirror;
         }
     }
 

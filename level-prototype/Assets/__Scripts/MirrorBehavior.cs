@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MirrorBehavior : MonoBehaviour
 {
+
     void Start()
     {
         
@@ -16,15 +17,11 @@ public class MirrorBehavior : MonoBehaviour
     }
 
 
-    private void OnMouseDown()
+    private void OnMouseOver()
     {
         if (PlayerBehavior.S.mouseOverObject != gameObject)
         {
             PlayerBehavior.S.mouseOverObject = gameObject;
-        }
-        else
-        {
-            PlayerBehavior.S.mouseOverObject = null;
         }
     }
 
